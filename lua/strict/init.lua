@@ -71,19 +71,20 @@ local function invalid_key(key)
     vim.notify(msg, vim.log.levels.WARN, { title = "nvim-strict" })
 end
 
-local function override_config(default_config, config)
-    for key, value in pairs(config) do
-        if default_config[key] == nil then
+local function override_config(default, user)
+    if user == nil then return default end
+    for key, value in pairs(user) do
+        if default[key] == nil then
             invalid_key(key)
-        elseif type(default_config[key]) == 'table' then
-            override_config(default_config[key], value)
-        else default_config[key] = value end
+        elseif type(default[key]) == 'table' then
+            override_config(default[key], value)
+        else default[key] = value end
     end
-    return default_config
+    return default
 end
 
-function strict.setup(config)
-    config = override_config(default_config, config)
+function strict.setup(user_config)
+    local config = override_config(default_config, user_config)
     vim.api.nvim_create_autocmd('BufEnter', {
         group = strict_augroup,
         callback = function()
