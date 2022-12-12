@@ -1,7 +1,5 @@
 local strict = {}
-local strict_augroup = vim.api.nvim_create_augroup('strict', {
-    clear = true
-})
+local strict_augroup = vim.api.nvim_create_augroup('strict', { clear = true })
 local default_config = {
     excluded_filetypes = nil, -- { 'text', 'markdown', 'html' }
     highlight_group = 'DiffDelete',
@@ -37,7 +35,7 @@ local function highlight_deep_nesting(highlight_group, depth_limit,
     local nest_regex = string
         .format('^\\s\\{%s}\\zs\\s\\+\\(\\s*[%s]\\)\\@!',
             depth_limit * indent_size,
-            ignored_characters)
+            ignored_characters or '')
     vim.fn.matchadd(highlight_group, nest_regex, -1)
 end
 
@@ -68,8 +66,24 @@ local function autocmd_callback(config)
     end
 end
 
+local function invalid_key(key)
+    local msg = string.format('Error: invalid nvim-strict config key "%s"', key)
+    vim.notify(msg, vim.log.levels.WARN, { title = "nvim-strict" })
+end
+
+local function override_config(default_config, config)
+    for key, value in pairs(config) do
+        if default_config[key] == nil then
+            invalid_key(key)
+        elseif type(default_config[key]) == 'table' then
+            override_config(default_config[key], value)
+        else default_config[key] = value end
+    end
+    return default_config
+end
+
 function strict.setup(config)
-    config = config or default_config
+    config = override_config(default_config, config)
     vim.api.nvim_create_autocmd('BufEnter', {
         group = strict_augroup,
         callback = function()
