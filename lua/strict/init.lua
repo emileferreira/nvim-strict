@@ -29,7 +29,6 @@ local default_config = {
 }
 
 local function contains(table, string)
-    local string = vim.bo.filetype
     if type(table) == 'string' then return string == table
     elseif type(table) == 'table' then
         for _, element in ipairs(table) do
@@ -61,6 +60,7 @@ local function highlight_overlong_lines(highlight_group, line_length_limit)
 end
 
 local function autocmd_callback(config)
+    vim.fn.clearmatches()
     local filetype = vim.bo.filetype
     if contains(config.excluded_filetypes, filetype) then return end
     if config.included_filetypes ~= nil and not
