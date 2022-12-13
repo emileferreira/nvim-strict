@@ -66,17 +66,10 @@ local function autocmd_callback(config)
     end
 end
 
-local function invalid_key(key)
-    local msg = string.format('Error: invalid nvim-strict config key "%s"', key)
-    vim.notify(msg, vim.log.levels.WARN, { title = "nvim-strict" })
-end
-
 local function override_config(default, user)
     if user == nil then return default end
     for key, value in pairs(user) do
-        if default[key] == nil then
-            invalid_key(key)
-        elseif type(default[key]) == 'table' then
+        if type(default[key]) == 'table' then
             override_config(default[key], value)
         else default[key] = value end
     end
