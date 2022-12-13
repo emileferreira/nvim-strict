@@ -1,29 +1,39 @@
 local strict = {}
 local strict_augroup = vim.api.nvim_create_augroup('strict', { clear = true })
 local default_config = {
-    excluded_filetypes = nil, -- { 'text', 'markdown', 'html' }
-    highlight_group = 'DiffDelete',
+    included_filetypes = nil,
+    excluded_filetypes = nil,
     deep_nesting = {
+        highlight_group = 'DiffDelete',
         highlight = true,
-        depth_limit = 3, -- 4
-        ignored_characters = nil -- '\'".'
+        depth_limit = 3,
+        ignored_characters = nil
     },
     overlong_lines = {
+        highlight_group = 'DiffDelete',
         highlight = true,
         length_limit = 80
     },
     trailing_whitespace = {
+        highlight_group = 'SpellBad',
+        highlight = true
+    },
+    space_indentation = {
+        highlight_group = 'SpellBad',
+        highlight = false
+    },
+    tab_indentation = {
+        highlight_group = 'SpellBad',
         highlight = true
     }
 }
 
-local function is_excluded_filetype(excluded_filetypes)
-    local buffer_filetype = vim.bo.filetype
-    if type(excluded_filetypes) == 'string' then
-        if buffer_filetype == excluded_filetypes then return true end
-    elseif type(excluded_filetypes) == 'table' then
-        for _, excluded_filetype in ipairs(excluded_filetypes) do
-            if buffer_filetype == excluded_filetype then return true end
+local function contains(table, string)
+    local string = vim.bo.filetype
+    if type(table) == 'string' then return string == table
+    elseif type(table) == 'table' then
+        for _, element in ipairs(table) do
+            if string == element then return true end
         end
     end
     return false
@@ -51,16 +61,20 @@ local function highlight_overlong_lines(highlight_group, line_length_limit)
 end
 
 local function autocmd_callback(config)
-    if is_excluded_filetype(config.excluded_filetypes) then return end
+    local filetype = vim.bo.filetype
+    if contains(config.excluded_filetypes, filetype) then return end
+    if config.included_filetypes ~= nil and not
+        contains(config.included_filetypes, filetype) then return end
     if config.trailing_whitespace.highlight then
-        highlight_trailing_whitespace(config.highlight_group)
+        highlight_trailing_whitespace(config
+            .trailing_whitespace.highlight_group)
     end
     if config.overlong_lines.highlight then
-        highlight_overlong_lines(config.highlight_group,
+        highlight_overlong_lines(config.overlong_lines.highlight_group,
             config.overlong_lines.length_limit)
     end
     if config.deep_nesting.highlight then
-        highlight_deep_nesting(config.highlight_group,
+        highlight_deep_nesting(config.deep_nesting.highlight_group,
             config.deep_nesting.depth_limit,
             config.deep_nesting.ignored_characters)
     end
