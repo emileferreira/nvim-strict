@@ -1,5 +1,6 @@
 local strict = {}
 local strict_augroup = vim.api.nvim_create_augroup('strict', { clear = true })
+local match_priority = -1
 local default_config = {
     included_filetypes = nil,
     excluded_filetypes = nil,
@@ -28,6 +29,27 @@ local default_config = {
     }
 }
 
+local function highlight_deep_nesting(highlight_group, depth_limit,
+                                      ignored_characters)
+    local indent_size = vim.bo.shiftwidth
+    local nest_regex = string
+        .format('^\\s\\{%s}\\zs\\s\\+\\(\\s*[%s]\\)\\@!',
+            depth_limit * indent_size,
+            ignored_characters or '')
+    vim.fn.matchadd(highlight_group, nest_regex, match_priority)
+end
+
+local function highlight_trailing_whitespace(highlight_group)
+    local trailing_whitespace_regex = '\\s\\+$\\|\\t'
+    vim.fn.matchadd(highlight_group, trailing_whitespace_regex, match_priority)
+end
+
+local function highlight_overlong_lines(highlight_group, line_length_limit)
+    local line_length_regex = string
+        .format('\\%s>%sv.\\+', '%', line_length_limit)
+    vim.fn.matchadd(highlight_group, line_length_regex, match_priority)
+end
+
 local function contains(table, string)
     if type(table) == 'string' then return string == table
     elseif type(table) == 'table' then
@@ -38,33 +60,18 @@ local function contains(table, string)
     return false
 end
 
-local function highlight_deep_nesting(highlight_group, depth_limit,
-                                      ignored_characters)
-    local indent_size = vim.bo.shiftwidth
-    local nest_regex = string
-        .format('^\\s\\{%s}\\zs\\s\\+\\(\\s*[%s]\\)\\@!',
-            depth_limit * indent_size,
-            ignored_characters or '')
-    vim.fn.matchadd(highlight_group, nest_regex, -1)
-end
-
-local function highlight_trailing_whitespace(highlight_group)
-    local trailing_whitespace_regex = '\\s\\+$\\|\\t'
-    vim.fn.matchadd(highlight_group, trailing_whitespace_regex, -1)
-end
-
-local function highlight_overlong_lines(highlight_group, line_length_limit)
-    local line_length_regex = string
-        .format('\\%s>%sv.\\+', '%', line_length_limit)
-    vim.fn.matchadd(highlight_group, line_length_regex, -1)
+local function is_included_filetype(included_filetypes, excluded_filetypes)
+    local filetype = vim.bo.filetype
+    if contains(excluded_filetypes, filetype) then return false end
+    if included_filetypes ~= nil and not
+        contains(included_filetypes, filetype) then return false end
+    return true
 end
 
 local function autocmd_callback(config)
     vim.fn.clearmatches()
-    local filetype = vim.bo.filetype
-    if contains(config.excluded_filetypes, filetype) then return end
-    if config.included_filetypes ~= nil and not
-        contains(config.included_filetypes, filetype) then return end
+    if not is_included_filetype(config.included_filetypes,
+        config.excluded_filetypes) then return end
     if config.trailing_whitespace.highlight then
         highlight_trailing_whitespace(config
             .trailing_whitespace.highlight_group)
