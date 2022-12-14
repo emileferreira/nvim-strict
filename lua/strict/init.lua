@@ -73,7 +73,7 @@ local function is_included_filetype(included_filetypes, excluded_filetypes)
     return true
 end
 
-local function highlight(config)
+local function configure_highlights(config)
     if config.trailing_whitespace.highlight then
         highlight_trailing_whitespace(
             config.trailing_whitespace.highlight_group)
@@ -99,10 +99,25 @@ local function highlight(config)
     })
 end
 
+function strict.remove_trailing_whitespace()
+    vim.cmd('%s/\\s\\+$//e')
+end
+
+local function configure_formatting(config)
+    if config.trailing_whitespace.remove_on_save then
+        vim.api.nvim_create_autocmd('BufWritePre', {
+            group = strict_augroup,
+            buffer = 0,
+            callback = function() strict.remove_trailing_whitespace() end
+        })
+    end
+end
+
 local function autocmd_callback(config)
     if not is_included_filetype(config.included_filetypes,
         config.excluded_filetypes) then return end
-    highlight(config)
+    configure_highlights(config)
+    configure_formatting(config)
 end
 
 local function override_config(default, user)
