@@ -5,32 +5,36 @@ local default_config = {
     included_filetypes = nil,
     excluded_filetypes = nil,
     deep_nesting = {
-        highlight_group = 'DiffDelete',
         highlight = true,
+        highlight_group = 'DiffDelete',
         depth_limit = 3,
-        ignored_characters = nil
+        ignored_characters = nil,
+        detect_indentation = true
     },
     overlong_lines = {
-        highlight_group = 'DiffDelete',
         highlight = true,
+        highlight_group = 'DiffDelete',
         length_limit = 80
     },
     trailing_whitespace = {
+        highlight = true,
         highlight_group = 'SpellBad',
-        highlight = true
+        remove_on_save = true,
     },
     space_indentation = {
+        highlight = false,
         highlight_group = 'SpellBad',
-        highlight = false
+        convert_on_save = false
     },
     tab_indentation = {
+        highlight = true,
         highlight_group = 'SpellBad',
-        highlight = true
+        convert_on_save = true
     }
 }
 
-local function highlight_deep_nesting(highlight_group, depth_limit,
-                                      ignored_characters)
+local function highlight_deep_nesting(
+    highlight_group, depth_limit, ignored_characters)
     local indent_size = vim.bo.shiftwidth
     local nest_regex = string
         .format('^\\s\\{%s}\\zs\\s\\+\\(\\s*[%s]\\)\\@!',
