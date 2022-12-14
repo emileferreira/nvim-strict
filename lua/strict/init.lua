@@ -103,12 +103,38 @@ function strict.remove_trailing_whitespace()
     vim.cmd('%s/\\s\\+$//e')
 end
 
+function strict.convert_tabs_to_spaces()
+    local spaces = ''
+    for _ = 1, vim.bo.shiftwidth, 1 do
+        spaces = spaces .. ' '
+    end
+    vim.cmd('%s/\\t/' .. spaces .. '/ge')
+end
+
+function strict.convert_spaces_to_tabs()
+    vim.cmd('%s/[ ]\\{' .. vim.bo.shiftwidth .. '}/\\t/ge')
+end
+
 local function configure_formatting(config)
     if config.trailing_whitespace.remove_on_save then
         vim.api.nvim_create_autocmd('BufWritePre', {
             group = strict_augroup,
             buffer = 0,
             callback = function() strict.remove_trailing_whitespace() end
+        })
+    end
+    if config.tab_indentation.convert_on_save then
+        vim.api.nvim_create_autocmd('BufWritePre', {
+            group = strict_augroup,
+            buffer = 0,
+            callback = function() strict.convert_tabs_to_spaces() end
+        })
+    end
+    if config.space_indentation.convert_on_save then
+        vim.api.nvim_create_autocmd('BufWritePre', {
+            group = strict_augroup,
+            buffer = 0,
+            callback = function() strict.convert_spaces_to_tabs() end
         })
     end
 end
