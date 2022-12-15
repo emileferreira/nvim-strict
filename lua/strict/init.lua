@@ -36,23 +36,33 @@ local default_config = {
 local function highlight_deep_nesting(
     highlight_group, depth_limit, ignored_characters)
     local indent_size = vim.bo.shiftwidth
-    local nest_regex = string
+    local regex = string
         .format('^\\s\\{%s}\\zs\\s\\+\\(\\s*[%s]\\)\\@!',
             depth_limit * indent_size,
             ignored_characters or '')
-    return vim.fn.matchadd(highlight_group, nest_regex, match_priority)
+    vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
 local function highlight_trailing_whitespace(highlight_group)
-    local trailing_whitespace_regex = '\\s\\+$\\|\\t'
-    return vim.fn.matchadd(highlight_group, trailing_whitespace_regex,
+    local regex = '\\s\\+$'
+    vim.fn.matchadd(highlight_group, regex,
         match_priority)
 end
 
 local function highlight_overlong_lines(highlight_group, line_length_limit)
-    local line_length_regex = string
+    local regex = string
         .format('\\%s>%sv.\\+', '%', line_length_limit)
-    return vim.fn.matchadd(highlight_group, line_length_regex, match_priority)
+    vim.fn.matchadd(highlight_group, regex, match_priority)
+end
+
+local function highlight_tab_indentation(highlight_group)
+    local regex = string.format('\\(^\\s*\\)\\@<=\\t')
+    vim.fn.matchadd(highlight_group, regex, match_priority)
+end
+
+local function highlight_space_indentation(highlight_group)
+    local regex = string.format('\\(^\\s*\\)\\@<= ')
+    vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
 local function contains(table, string)
@@ -88,6 +98,14 @@ local function configure_highlights(config)
             config.deep_nesting.highlight_group,
             config.deep_nesting.depth_limit,
             config.deep_nesting.ignored_characters)
+    end
+    if config.tab_indentation.highlight then
+        highlight_tab_indentation(
+            config.tab_indentation.highlight_group)
+    end
+    if config.space_indentation.highlight then
+        highlight_space_indentation(
+            config.space_indentation.highlight_group)
     end
     vim.api.nvim_create_autocmd('BufWinLeave', {
         group = strict_augroup,
