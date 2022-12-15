@@ -108,11 +108,11 @@ function strict.convert_tabs_to_spaces()
     for _ = 1, vim.bo.shiftwidth, 1 do
         spaces = spaces .. ' '
     end
-    vim.cmd('%s/\\t/' .. spaces .. '/ge')
+    vim.cmd('%s/\\(^\\s*\\)\\@<=\\t/' .. spaces .. '/ge')
 end
 
 function strict.convert_spaces_to_tabs()
-    vim.cmd('%s/[ ]\\{' .. vim.bo.shiftwidth .. '}/\\t/ge')
+    vim.cmd('%s/\\(^\\s*\\)\\@<=[ ]\\{' .. vim.bo.shiftwidth .. '}/\\t/ge')
 end
 
 local function configure_formatting(config)
