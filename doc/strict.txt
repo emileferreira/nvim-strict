@@ -44,4 +44,114 @@ Usage:
 
     require('strict').convert_spaces_to_tabs()
 
+*strict.included_filetypes*
+
+The filetypes of buffers that Strict shall be enabled on. A value of nil matches
+all filetypes. Type: nil, string or table. Default value: nil.
+
+*strict.excluded_filetypes*
+
+The filetypes of buffers that Strict shall not be enabled on. Type: nil, string
+or table. Default value: nil.
+
+*strict.deep_nesting*
+
+Configuration options for deep nesting.
+
+    *strict.deep_nesting.highlight*
+
+    Whether or not to highlight lines that are too deeply nested. Type:
+    boolean. Default value: true.
+
+    *strict.deep_nesting.highlight_group*
+
+    The highlight group to use for lines that are too deeply nested. Type:
+    string. Default value: 'DiffDelete'.
+
+    *strict.deep_nesting.depth_limit*
+
+    The maximum number of indentation levels accepted. Type: number. Default
+    value: 3.
+
+    *strict.deep_nesting.ignored_characters*
+
+    The leading characters (excluding whitespace) of lines to ignore. Type: nil
+    or string. Default value: nil.
+
+*strict.overlong_lines*
+
+Configuration options for overlong lines.
+
+    *strict.overlong_lines.highlight*
+
+    Whether or not to highlight lines that are too long. Type: boolean. Default
+    value: true.
+
+    *strict.overlong_lines.highlight_group*
+
+    The highlight group to use for lines that are too long. Type: string.
+    Default value: 'DiffDelete'.
+
+    *strict.overlong_lines.length_limit*
+
+    The maximum accepted length (in characters) of lines. Type: number. Default
+    value: 80.
+
+*strict.trailing_whitespace*
+
+Configuration options for trailing whitespace.
+
+    *strict.trailing_whitespace.highlight*
+
+    Whether or not to highlight trailing whitespace. Type: boolean. Default
+    value: true.
+
+    *strict.trailing_whitespace.highlight_group*
+
+    The highlight group to use for trailing whitespace. Type: string. Default
+    value: 'SpellBad'.
+
+    *strict.trailing_whitespace.remove_on_save*
+
+    Whether or not to remove trailing whitespace when writing the buffer. Type:
+    boolean. Default value: true.
+
+*strict.space_indentation*
+
+Configuration options for space indentation.
+
+    *strict.space_indentation.highlight*
+
+    Whether or not to highlight space characters used for indentation. Type:
+    boolean. Default value: false.
+
+    *strict.space_indentation.highlight_group*
+
+    The highlight group to use for space indentation. Type: string. Default
+    value: 'SpellBad'.
+
+    *strict.space_indentation.convert_on_save*
+
+    Whether or not to convert space indentation to tab indentation when writing
+    the buffer. Type: boolean. Default value: false.
+
+*strict.tab_indentation*
+
+Configuration options for tab indentation.
+
+    *strict.tab_indentation.highlight*
+
+    Whether or not to highlight tab characters used for indentation. Type:
+    boolean. Default value: true.
+
+    *strict.tab_indentation.highlight_group*
+
+    The highlight group to use for tab indentation. Type: string. Default value:
+    'SpellBad'.
+
+    *strict.tab_indentation.convert_on_save*
+
+    Whether or not to convert tab indentation to space indentation when writing
+    the buffer. Type: boolean. Default value: true.
+
 vim:tw=78:ts=8:ft=help:norl:
