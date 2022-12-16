@@ -42,8 +42,7 @@ local default_config = {
         highlight = true,
         highlight_group = 'DiffDelete',
         depth_limit = 3,
-        ignored_characters = nil,
-        detect_indentation = true
+        ignored_characters = nil
     },
     overlong_lines = {
         highlight = true,
