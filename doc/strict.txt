@@ -54,6 +54,11 @@ all filetypes. Type: nil, string or table. Default value: nil.
 The filetypes of buffers that Strict shall not be enabled on. Type: nil, string
 or table. Default value: nil.
 
+*strict.excluded_buftypes*
+
+The buftypes of buffers that Strict shall not be enabled on. Type: nil, string
+or table. Default value: { 'help', 'nofile', 'terminal', 'prompt' }.
+
 *strict.deep_nesting*
 
 Configuration options for deep nesting.

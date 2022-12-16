@@ -4,6 +4,7 @@ local match_priority = -1
 local default_config = {
     included_filetypes = nil,
     excluded_filetypes = nil,
+    excluded_buftypes = { 'help', 'nofile', 'terminal', 'prompt' },
     deep_nesting = {
         highlight = true,
         highlight_group = 'DiffDelete',
@@ -157,6 +158,7 @@ local function configure_formatting(config)
 end
 
 local function autocmd_callback(config)
+    if contains(config.excluded_buftypes, vim.bo.buftype) then return end
     if not is_included_filetype(config.included_filetypes,
         config.excluded_filetypes) then return end
     configure_highlights(config)

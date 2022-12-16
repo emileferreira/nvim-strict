@@ -38,6 +38,7 @@ Strict comes with batteries included and (IMHO) sane defaults. The default confi
 local default_config = {
     included_filetypes = nil,
     excluded_filetypes = nil,
+    excluded_buftypes = { 'help', 'nofile', 'terminal', 'prompt' },
     deep_nesting = {
         highlight = true,
         highlight_group = 'DiffDelete',
