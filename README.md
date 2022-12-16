@@ -1,12 +1,12 @@
 # nvim-strict
 
-Strictly enforce configurable, best-practice code style with this [Neovim](https://neovim.io/) plugin. Expose deep nesting, overlong lines, trailing whitespace and inconsistent indentation.
+Strictly enforce configurable, best-practice code style with this [Neovim](https://neovim.io/) plugin.
 
 ![nvim-strict demo](demo.png)
 
 ## Introduction
 
-At its core, nvim-strict (Strict) is an all-Lua wrapper around a collection of regular expressions. These combine to provide lightweight, IDE-like code style hints and formatting. Strict is not a code formatting plugin; it formats everything around your code.
+Strict (or nvim-strict) is an all-Lua wrapper for a collection of regular expressions which combine to provide lightweight, IDE-like code style hints and formatting. Strict is not a code formatting plugin; it formats everything around code.
 
 ## Features
 
@@ -34,7 +34,7 @@ use({
 
 ## Configuration
 
-Strict comes with batteries included and (IMHO) sane defaults. The default configuration is shown below which can be modified and passed to the `setup` function to override the defaults.
+Strict comes with batteries included and (IMHO) sane defaults. The default configuration is shown below which can be modified and passed to the `setup` function to override the default values.
 
 ```lua
 local default_config = {
