@@ -28,7 +28,7 @@ Usage:
 
 *strict.convert_tabs_to_spaces()*
 
-Substitutes tab characters used for indentation with |vim.bo.shiftwidth| spaces
+Substitutes tab characters used for indentation with |shiftwidth| spaces
 in the current buffer.
 
 Usage:
@@ -37,7 +37,7 @@ Usage:
 
 *strict.convert_spaces_to_tabs()*
 
-Substitutes |vim.bo.shiftwidth| spaces used for indentation with tab characters
+Substitutes |shiftwidth| spaces used for indentation with tab characters
 in the current buffer.
 
 Usage:

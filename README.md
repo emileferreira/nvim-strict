@@ -70,6 +70,21 @@ local default_config = {
 }
 ```
 
+The following is an example of a more forgiving configuration.
+
+```lua
+require('strict').setup({
+    excluded_filetypes = { 'text', 'markdown', 'html' },
+    deep_nesting = {
+        depth_limit = 5,
+        ignored_characters = '\'".'
+    },
+    overlong_lines = {
+        length_limit = 120
+    }
+})
+```
+
 ## Keymaps
 
 The formatting functions are exported for use in keymaps, autocmds or other plugins. Below is a basic example of using the functions in keymaps.
