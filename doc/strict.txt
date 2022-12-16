@@ -1,0 +1,47 @@
+*strict*
+
+Strictly enforce configurable, best-practice code style with this Neovim plugin.
+Expose deep nesting, overlong lines, trailing whitespace and inconsistent
+indentation.
+
+Strict (or nvim-strict) is an all-Lua wrapper for a collection of regular
+expressions which combine to provide lightweight, IDE-like code style hints and
+formatting. Strict is not a code formatting plugin; it formats everything around
+code.
+
+*strict.setup()*
+
+This function invokes the plugin using the default configuration or a table of
+values passed as an argument.
+
+Usage:
+
+    require('strict').setup({ ... })
+
+*strict.remove_trailing_whitespace()*
+
+Removes whitespace characters from the end of each line of the current buffer.
+
+Usage:
+
+    require('strict').remove_trailing_whitespace()
+
+*strict.convert_tabs_to_spaces()*
+
+Substitutes tab characters used for indentation with |vim.bo.shiftwidth| spaces
+in the current buffer.
+
+Usage:
+
+    require('strict').convert_tabs_to_spaces()
+
+*strict.convert_spaces_to_tabs()*
+
+Substitutes |vim.bo.shiftwidth| spaces used for indentation with tab characters
+in the current buffer.
+
+Usage:
+
+    require('strict').convert_spaces_to_tabs()
+
+vim:tw=78:ts=8:ft=help:norl:
