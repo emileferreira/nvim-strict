@@ -70,6 +70,18 @@ local default_config = {
 }
 ```
 
+## Keymaps
+
+The formatting functions are exported for use in keymaps, autocmds or other plugins. Below is a basic example of using the functions in keymaps.
+
+```lua
+local strict = require('strict')
+local options = { noremap = true, silent = true }
+vim.keymap.set('n', '<Leader>tw', strict.remove_trailing_whitespace, options)
+vim.keymap.set('n', '<Leader>st', strict.convert_spaces_to_tabs, options)
+vim.keymap.set('n', '<Leader>ts', strict.convert_tabs_to_spaces, options)
+```
+
 ## Contributing
 
 Pull requests, bug reports and feature requests are welcomed.
