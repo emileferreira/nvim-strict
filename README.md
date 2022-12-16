@@ -1,6 +1,8 @@
 # nvim-strict
 
-Strictly enforce customisable, best-practice code style with this Neovim plugin. Expose deep nesting, overlong lines and trailing whitespace.
+Strictly enforce configurable, best-practice code style with this [Neovim](https://neovim.io/) plugin. Expose deep nesting, overlong lines, trailing whitespace and inconsistent indentation.
+
+![nvim-strict demo](demo.png)
 
 ## Introduction
 
@@ -32,7 +34,7 @@ use({
 
 ## Configuration
 
-Strict comes with batteries included and (IMHO) sane defaults. The default configuration is shown below. This can be modified and passed to the `setup` function to override the defaults.
+Strict comes with batteries included and (IMHO) sane defaults. The default configuration is shown below which can be modified and passed to the `setup` function to override the defaults.
 
 ```lua
 local default_config = {
