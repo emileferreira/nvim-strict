@@ -21,6 +21,11 @@ local default_config = {
         highlight_group = 'SpellBad',
         remove_on_save = true,
     },
+    trailing_empty_lines = {
+        highlight = true,
+        highlight_group = 'SpellBad',
+        remove_on_save = true,
+    },
     space_indentation = {
         highlight = false,
         highlight_group = 'SpellBad',
@@ -45,6 +50,12 @@ end
 
 local function highlight_trailing_whitespace(highlight_group)
     local regex = '\\s\\+$'
+    vim.fn.matchadd(highlight_group, regex,
+        match_priority)
+end
+
+local function highlight_trailing_empty_lines(highlight_group)
+    local regex = '\\($\\n\\s*\\)\\+\\%$'
     vim.fn.matchadd(highlight_group, regex,
         match_priority)
 end
@@ -88,6 +99,10 @@ local function configure_highlights(config)
         highlight_trailing_whitespace(
             config.trailing_whitespace.highlight_group)
     end
+    if config.trailing_empty_lines.highlight then
+        highlight_trailing_empty_lines(
+            config.trailing_empty_lines.highlight_group)
+    end
     if config.overlong_lines.highlight then
         highlight_overlong_lines(
             config.overlong_lines.highlight_group,
@@ -117,8 +132,18 @@ local function configure_highlights(config)
     })
 end
 
+local function silent_cmd(command)
+    local view = vim.fn.winsaveview()
+    vim.cmd('silent keepjumps keeppatterns ' .. command)
+    vim.fn.winrestview(view)
+end
+
 function strict.remove_trailing_whitespace()
-    vim.cmd('%s/\\s\\+$//e')
+    silent_cmd('%s/\\s\\+$//e')
+end
+
+function strict.remove_trailing_empty_lines()
+    silent_cmd('%s/\\($\\n\\s*\\)\\+\\%$//e')
 end
 
 function strict.convert_tabs_to_spaces()
@@ -126,11 +151,11 @@ function strict.convert_tabs_to_spaces()
     for _ = 1, vim.bo.shiftwidth, 1 do
         spaces = spaces .. ' '
     end
-    vim.cmd('%s/\\(^\\s*\\)\\@<=\\t/' .. spaces .. '/ge')
+    silent_cmd('%s/\\(^\\s*\\)\\@<=\\t/' .. spaces .. '/ge')
 end
 
 function strict.convert_spaces_to_tabs()
-    vim.cmd('%s/\\(^\\s*\\)\\@<=[ ]\\{' .. vim.bo.shiftwidth .. '}/\\t/ge')
+    silent_cmd('%s/\\(^\\s*\\)\\@<=[ ]\\{' .. vim.bo.shiftwidth .. '}/\\t/ge')
 end
 
 local function configure_formatting(config)
@@ -138,21 +163,28 @@ local function configure_formatting(config)
         vim.api.nvim_create_autocmd('BufWritePre', {
             group = strict_augroup,
             buffer = 0,
-            callback = function() strict.remove_trailing_whitespace() end
+            callback = strict.remove_trailing_whitespace
+        })
+    end
+    if config.trailing_empty_lines.remove_on_save then
+        vim.api.nvim_create_autocmd('BufWritePre', {
+            group = strict_augroup,
+            buffer = 0,
+            callback = strict.remove_trailing_empty_lines
         })
     end
     if config.tab_indentation.convert_on_save then
         vim.api.nvim_create_autocmd('BufWritePre', {
             group = strict_augroup,
             buffer = 0,
-            callback = function() strict.convert_tabs_to_spaces() end
+            callback = strict.convert_tabs_to_spaces
         })
     end
     if config.space_indentation.convert_on_save then
         vim.api.nvim_create_autocmd('BufWritePre', {
             group = strict_augroup,
             buffer = 0,
-            callback = function() strict.convert_spaces_to_tabs() end
+            callback = strict.convert_spaces_to_tabs
         })
     end
 end
