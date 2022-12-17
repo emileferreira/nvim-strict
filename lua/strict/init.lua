@@ -1,10 +1,10 @@
 local strict = {}
 local strict_augroup = vim.api.nvim_create_augroup('strict', { clear = true })
-local match_priority = -1
 local default_config = {
     included_filetypes = nil,
     excluded_filetypes = nil,
     excluded_buftypes = { 'help', 'nofile', 'terminal', 'prompt' },
+    match_priority = -1,
     deep_nesting = {
         highlight = true,
         highlight_group = 'DiffDelete',
@@ -39,7 +39,7 @@ local default_config = {
 }
 
 local function highlight_deep_nesting(
-    highlight_group, depth_limit, ignored_characters)
+    highlight_group, depth_limit, ignored_characters, match_priority)
     local indent_size = vim.bo.shiftwidth
     local regex = string
         .format('^\\s\\{%s}\\zs\\s\\+\\(\\s*[%s]\\)\\@!',
@@ -48,30 +48,31 @@ local function highlight_deep_nesting(
     vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
-local function highlight_trailing_whitespace(highlight_group)
+local function highlight_trailing_whitespace(highlight_group, match_priority)
     local regex = '\\s\\+$'
     vim.fn.matchadd(highlight_group, regex,
         match_priority)
 end
 
-local function highlight_trailing_empty_lines(highlight_group)
+local function highlight_trailing_empty_lines(highlight_group, match_priority)
     local regex = '\\($\\n\\s*\\)\\+\\%$'
     vim.fn.matchadd(highlight_group, regex,
         match_priority)
 end
 
-local function highlight_overlong_lines(highlight_group, line_length_limit)
+local function highlight_overlong_lines(
+    highlight_group, length_limit, match_priority)
     local regex = string
-        .format('\\%s>%sv.\\+', '%', line_length_limit)
+        .format('\\%s>%sv.\\+', '%', length_limit)
     vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
-local function highlight_tab_indentation(highlight_group)
+local function highlight_tab_indentation(highlight_group, match_priority)
     local regex = string.format('\\(^\\s*\\)\\@<=\\t')
     vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
-local function highlight_space_indentation(highlight_group)
+local function highlight_space_indentation(highlight_group, match_priority)
     local regex = string.format('\\(^\\s*\\)\\@<= ')
     vim.fn.matchadd(highlight_group, regex, match_priority)
 end
@@ -97,30 +98,36 @@ end
 local function configure_highlights(config)
     if config.trailing_whitespace.highlight then
         highlight_trailing_whitespace(
-            config.trailing_whitespace.highlight_group)
+            config.trailing_whitespace.highlight_group,
+            config.match_priority)
     end
     if config.trailing_empty_lines.highlight then
         highlight_trailing_empty_lines(
-            config.trailing_empty_lines.highlight_group)
+            config.trailing_empty_lines.highlight_group,
+            config.match_priority)
     end
     if config.overlong_lines.highlight then
         highlight_overlong_lines(
             config.overlong_lines.highlight_group,
-            config.overlong_lines.length_limit)
+            config.overlong_lines.length_limit,
+            config.match_priority)
     end
     if config.deep_nesting.highlight then
         highlight_deep_nesting(
             config.deep_nesting.highlight_group,
             config.deep_nesting.depth_limit,
-            config.deep_nesting.ignored_characters)
+            config.deep_nesting.ignored_characters,
+            config.match_priority)
     end
     if config.tab_indentation.highlight then
         highlight_tab_indentation(
-            config.tab_indentation.highlight_group)
+            config.tab_indentation.highlight_group,
+            config.match_priority)
     end
     if config.space_indentation.highlight then
         highlight_space_indentation(
-            config.space_indentation.highlight_group)
+            config.space_indentation.highlight_group,
+            config.match_priority)
     end
     vim.api.nvim_create_autocmd('BufWinLeave', {
         group = strict_augroup,

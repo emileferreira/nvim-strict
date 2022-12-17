@@ -8,12 +8,12 @@ Strict (or nvim-strict) is an all-Lua wrapper for a collection of regular expres
 
 ## Features
 
-* Highlight deeply-nested code
-* Highlight overlong lines
-* Highlight and automatically remove trailing whitespace
-* Highlight and automatically convert tab / space indentation
+* Highlights deeply-nested code
+* Highlights overlong lines
+* Highlights and removes trailing whitespace
+* Highlights and converts tab / space indentation
+* Formatting functions preserve window, cursor, jumplist and search state
 * Include and exclude filetypes
-* Formatting functions retain window, cursor, jumplist and search state
 * Mappable functions
 * Highly configurable
 * Blazingly fast
@@ -40,6 +40,7 @@ local default_config = {
     included_filetypes = nil,
     excluded_filetypes = nil,
     excluded_buftypes = { 'help', 'nofile', 'terminal', 'prompt' },
+    match_priority = -1,
     deep_nesting = {
         highlight = true,
         highlight_group = 'DiffDelete',

@@ -67,6 +67,10 @@ or table. Default value: nil.
 The buftypes of buffers that Strict shall not be enabled on. Type: nil, string
 or table. Default value: { 'help', 'nofile', 'terminal', 'prompt' }.
 
+*strict.match_priority*
+
+The priority of the Strict highlights. Type: number. Default value: -1.
+
 *strict.deep_nesting*
 
 Configuration options for deep nesting.
