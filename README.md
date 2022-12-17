@@ -13,6 +13,7 @@ Strict (or nvim-strict) is an all-Lua wrapper for a collection of regular expres
 * Highlight and automatically remove trailing whitespace
 * Highlight and automatically convert tab / space indentation
 * Include and exclude filetypes
+* Formatting functions retain window, cursor, jumplist and search state
 * Mappable functions
 * Highly configurable
 * Blazingly fast
@@ -51,6 +52,11 @@ local default_config = {
         length_limit = 80
     },
     trailing_whitespace = {
+        highlight = true,
+        highlight_group = 'SpellBad',
+        remove_on_save = true,
+    },
+    trailing_empty_lines = {
         highlight = true,
         highlight_group = 'SpellBad',
         remove_on_save = true,

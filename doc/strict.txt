@@ -26,6 +26,14 @@ Usage:
 
     require('strict').remove_trailing_whitespace()
 
+*strict.remove_trailing_empty_lines()*
+
+Removes empty or whitespace lines from the end of the current buffer.
+
+Usage:
+
+    require('strict').remove_trailing_empty_lines()
+
 *strict.convert_tabs_to_spaces()*
 
 Substitutes tab characters used for indentation with |shiftwidth| spaces
@@ -119,6 +127,25 @@ Configuration options for trailing whitespace.
     *strict.trailing_whitespace.remove_on_save*
 
     Whether or not to remove trailing whitespace when writing the buffer. Type:
+    boolean. Default value: true.
+
+*strict.trailing_empty_lines*
+
+Configuration options for trailing empty lines.
+
+    *strict.trailing_empty_lines.highlight*
+
+    Whether or not to highlight trailing empty lines. Type: boolean. Default
+    value: true.
+
+    *strict.trailing_empty_lines.highlight_group*
+
+    The highlight group to use for trailing empty lines. Type: string. Default
+    value: 'SpellBad'.
+
+    *strict.trailing_empty_lines.remove_on_save*
+
+    Whether or not to remove trailing empty lines when writing the buffer. Type:
     boolean. Default value: true.
 
 *strict.space_indentation*
