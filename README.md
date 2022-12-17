@@ -1,6 +1,6 @@
 # nvim-strict
 
-Strictly enforce configurable, best-practice code style with this [Neovim](https://neovim.io/) plugin. Expose deep nesting, overlong lines, trailing whitespace and inconsistent indentation.
+Strictly enforce configurable, best-practice code style with this [Neovim](https://neovim.io/) plugin. Expose deep nesting, overlong lines, trailing whitespace, trailing empty lines and inconsistent indentation.
 
 ![nvim-strict demo](demo.png)
 
@@ -11,6 +11,7 @@ Strict (or nvim-strict) is an all-Lua wrapper for a collection of regular expres
 * Highlights deeply-nested code
 * Highlights overlong lines
 * Highlights and removes trailing whitespace
+* Highlights and removes trailing empty lines
 * Highlights and converts tab / space indentation
 * Formatting functions preserve window, cursor, jumplist and search state
 * Include and exclude filetypes
