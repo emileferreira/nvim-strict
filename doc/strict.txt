@@ -11,8 +11,9 @@ code.
 
 *strict.setup()*
 
-This function invokes the plugin using the default configuration or a table of
-values passed as an argument.
+This function configures the plugin using the default values or a table of
+values passed as an argument. Note that Strict is only enabled once this
+function has been called.
 
 Usage:
 

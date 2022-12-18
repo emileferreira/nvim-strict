@@ -21,7 +21,7 @@ Strict (or nvim-strict) is an all-Lua wrapper for a collection of regular expres
 
 ## Installation
 
-Strict can be installed using any package manager. Here is an example using [packer.nvim](https://github.com/wbthomason/packer.nvim) to install Strict using the default configuration.
+Strict can be installed using any package manager. Here is an example using [packer.nvim](https://github.com/wbthomason/packer.nvim) to install and setup Strict using the default configuration. Note that Strict is only enabled once the `setup` function has been called.
 
 ```lua
 use({
@@ -99,6 +99,7 @@ The formatting functions are exported for use in keymaps, autocmds or other plug
 local strict = require('strict')
 local options = { noremap = true, silent = true }
 vim.keymap.set('n', '<Leader>tw', strict.remove_trailing_whitespace, options)
+vim.keymap.set('n', '<Leader>tl', strict.remove_trailing_empty_lines, options)
 vim.keymap.set('n', '<Leader>st', strict.convert_spaces_to_tabs, options)
 vim.keymap.set('n', '<Leader>ts', strict.convert_tabs_to_spaces, options)
 ```
