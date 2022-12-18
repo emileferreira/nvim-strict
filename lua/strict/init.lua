@@ -14,7 +14,8 @@ local default_config = {
     overlong_lines = {
         highlight = true,
         highlight_group = 'DiffDelete',
-        length_limit = 80
+        length_limit = 80,
+        split_on_save = true
     },
     trailing_whitespace = {
         highlight = true,
@@ -50,20 +51,17 @@ end
 
 local function highlight_trailing_whitespace(highlight_group, match_priority)
     local regex = '\\s\\+$'
-    vim.fn.matchadd(highlight_group, regex,
-        match_priority)
+    vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
 local function highlight_trailing_empty_lines(highlight_group, match_priority)
     local regex = '\\($\\n\\s*\\)\\+\\%$'
-    vim.fn.matchadd(highlight_group, regex,
-        match_priority)
+    vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
 local function highlight_overlong_lines(
     highlight_group, length_limit, match_priority)
-    local regex = string
-        .format('\\%s>%sv.\\+', '%', length_limit)
+    local regex = '\\%>' .. length_limit .. 'v.\\+'
     vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
@@ -145,6 +143,11 @@ local function silent_cmd(command)
     vim.fn.winrestview(view)
 end
 
+function strict.split_overlong_lines(length_limit)
+    silent_cmd('setlocal textwidth=' .. length_limit)
+    silent_cmd('g/\\%>' .. length_limit .. 'v.\\+/normal gwl')
+end
+
 function strict.remove_trailing_whitespace()
     silent_cmd('%s/\\s\\+$//e')
 end
@@ -192,6 +195,14 @@ local function configure_formatting(config)
             group = strict_augroup,
             buffer = 0,
             callback = strict.convert_spaces_to_tabs
+        })
+    end
+    if config.overlong_lines.split_on_save then
+        local length_limit = config.overlong_lines.length_limit
+        vim.api.nvim_create_autocmd('BufWritePre', {
+            group = strict_augroup,
+            buffer = 0,
+            callback = function() strict.split_overlong_lines(length_limit) end
         })
     end
 end
