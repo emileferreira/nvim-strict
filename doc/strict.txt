@@ -53,6 +53,15 @@ Usage:
 
     require('strict').convert_spaces_to_tabs()
 
+*strict.split_overlong_lines()*
+
+Splits lines, on the closest whitespace, that are longer than |textwidth|
+characters. Strict sets |textwidth| to |strict.overlong_lines.length_limit|.
+
+Usage:
+
+    require('strict').split_overlong_lines()
+
 *strict.included_filetypes*
 
 The filetypes of buffers that Strict shall be enabled on. A value of nil matches

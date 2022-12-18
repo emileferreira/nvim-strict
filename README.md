@@ -4,12 +4,12 @@ Strictly enforce configurable, best-practice code style with this [Neovim](https
 
 ![nvim-strict demo](demo.png)
 
-Strict (or nvim-strict) is an all-Lua wrapper for a collection of regular expressions which combine to provide lightweight, IDE-like code style hints and formatting. Strict is not a code formatting plugin; it formats everything around code.
+Strict (or nvim-strict) is an all-Lua wrapper for a collection of regular expressions which combine to provide lightweight, IDE-like code style hints and formatting.
 
 ## Features
 
 * Highlights deeply-nested code
-* Highlights overlong lines
+* Highlights and splits overlong lines
 * Highlights and removes trailing whitespace
 * Highlights and removes trailing empty lines
 * Highlights and converts tab / space indentation
@@ -51,7 +51,8 @@ local default_config = {
     overlong_lines = {
         highlight = true,
         highlight_group = 'DiffDelete',
-        length_limit = 80
+        length_limit = 80,
+        split_on_save = true
     },
     trailing_whitespace = {
         highlight = true,
@@ -102,6 +103,7 @@ vim.keymap.set('n', '<Leader>tw', strict.remove_trailing_whitespace, options)
 vim.keymap.set('n', '<Leader>tl', strict.remove_trailing_empty_lines, options)
 vim.keymap.set('n', '<Leader>st', strict.convert_spaces_to_tabs, options)
 vim.keymap.set('n', '<Leader>ts', strict.convert_tabs_to_spaces, options)
+vim.keymap.set('n', '<Leader>ol', strict.split_overlong_lines, options)
 ```
 
 ## Contributing

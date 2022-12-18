@@ -143,9 +143,8 @@ local function silent_cmd(command)
     vim.fn.winrestview(view)
 end
 
-function strict.split_overlong_lines(length_limit)
-    silent_cmd('setlocal textwidth=' .. length_limit)
-    silent_cmd('g/\\%>' .. length_limit .. 'v.\\+/normal gwl')
+function strict.split_overlong_lines()
+    silent_cmd('g/\\%>' .. vim.bo.textwidth .. 'v.\\+/normal gwl')
 end
 
 function strict.remove_trailing_whitespace()
@@ -198,11 +197,11 @@ local function configure_formatting(config)
         })
     end
     if config.overlong_lines.split_on_save then
-        local length_limit = config.overlong_lines.length_limit
+        vim.bo.textwidth = config.overlong_lines.length_limit
         vim.api.nvim_create_autocmd('BufWritePre', {
             group = strict_augroup,
             buffer = 0,
-            callback = function() strict.split_overlong_lines(length_limit) end
+            callback = strict.split_overlong_lines
         })
     end
 end
