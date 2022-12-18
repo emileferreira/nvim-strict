@@ -6,8 +6,7 @@ and inconsistent indentation.
 
 Strict (or nvim-strict) is an all-Lua wrapper for a collection of regular
 expressions which combine to provide lightweight, IDE-like code style hints and
-formatting. Strict is not a code formatting plugin; it formats everything around
-code.
+formatting.
 
 *strict.setup()*
 
