@@ -46,7 +46,8 @@ local default_config = {
         highlight = true,
         highlight_group = 'DiffDelete',
         depth_limit = 3,
-        ignored_characters = nil
+        ignored_trailing_characters = nil,
+        ignored_leading_characters = nil
     },
     overlong_lines = {
         highlight = true,
@@ -84,7 +85,8 @@ require('strict').setup({
     excluded_filetypes = { 'text', 'markdown', 'html' },
     deep_nesting = {
         depth_limit = 5,
-        ignored_characters = '\'".'
+        ignored_trailing_characters = ',',
+        ignored_leading_characters = '.'
     },
     overlong_lines = {
         length_limit = 120

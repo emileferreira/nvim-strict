@@ -9,7 +9,8 @@ local default_config = {
         highlight = true,
         highlight_group = 'DiffDelete',
         depth_limit = 3,
-        ignored_characters = nil
+        ignored_trailing_characters = nil,
+        ignored_leading_characters = nil
     },
     overlong_lines = {
         highlight = true,
@@ -40,12 +41,14 @@ local default_config = {
 }
 
 local function highlight_deep_nesting(
-    highlight_group, depth_limit, ignored_characters, match_priority)
+    highlight_group, depth_limit, ignored_trailing_characters,
+    ignored_leading_characters, match_priority)
     local indent_size = vim.bo.shiftwidth
     local regex = string
-        .format('^\\s\\{%s}\\zs\\s\\+\\(\\s*[%s]\\)\\@!',
+        .format('\\([%s]\\)\\@<!\\n^\\s\\{%s}\\zs\\s\\+\\(\\s*[%s]\\)\\@!',
+            ignored_trailing_characters or '',
             depth_limit * indent_size,
-            ignored_characters or '')
+            ignored_leading_characters or '')
     vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
@@ -114,7 +117,8 @@ local function configure_highlights(config)
         highlight_deep_nesting(
             config.deep_nesting.highlight_group,
             config.deep_nesting.depth_limit,
-            config.deep_nesting.ignored_characters,
+            config.deep_nesting.ignored_trailing_characters,
+            config.deep_nesting.ignored_leading_characters,
             config.match_priority)
     end
     if config.tab_indentation.highlight then

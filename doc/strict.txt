@@ -99,9 +99,14 @@ Configuration options for deep nesting.
     The maximum number of indentation levels accepted. Type: number. Default
     value: 3.
 
-    *strict.deep_nesting.ignored_characters*
+    *strict.deep_nesting.ignored_trailing_characters*
 
-    The leading characters (excluding whitespace) of lines to ignore. Type: nil
+    The trailing character, of the previous line, of lines to ignore. Type: nil
+    or string. Default value: nil.
+
+    *strict.deep_nesting.ignored_leading_characters*
+
+    The leading character (excluding whitespace) of lines to ignore. Type: nil
     or string. Default value: nil.
 
 *strict.overlong_lines*
