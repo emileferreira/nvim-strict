@@ -1,12 +1,12 @@
 *strict*
 
-Strictly enforce configurable, best-practice code style with this Neovim plugin.
-Expose deep nesting, overlong lines, trailing whitespace, trailing empty lines,
-todos and inconsistent indentation.
+Strictly enforce configurable, best-practice code style with this Neovim
+plugin. Expose deep nesting, overlong lines, trailing whitespace, trailing
+empty lines, todos and inconsistent indentation.
 
 Strict (or nvim-strict) is an all-Lua wrapper for a collection of regular
-expressions which combine to provide lightweight, IDE-like code style hints and
-formatting.
+expressions which combine to provide lightweight, IDE-like code style hints
+and formatting.
 
 *strict.setup()*
 
@@ -63,8 +63,8 @@ Usage:
 
 *strict.included_filetypes*
 
-The filetypes of buffers that Strict shall be enabled on. A value of nil matches
-all filetypes. Type: nil or table. Default value: nil.
+The filetypes of buffers that Strict shall be enabled on. A value of nil
+matches all filetypes. Type: nil or table. Default value: nil.
 
 *strict.excluded_filetypes*
 
@@ -73,8 +73,8 @@ table. Default value: nil.
 
 *strict.excluded_buftypes*
 
-The buftypes of buffers that Strict shall not be enabled on. Type: nil or table.
-Default value: { 'help', 'nofile', 'terminal', 'prompt' }.
+The buftypes of buffers that Strict shall not be enabled on. Type: nil or
+table. Default value: { 'help', 'nofile', 'terminal', 'prompt' }.
 
 *strict.match_priority*
 
@@ -101,8 +101,8 @@ Configuration options for deep nesting.
 
     *strict.deep_nesting.ignored_trailing_characters*
 
-    The trailing character, of the previous line, of lines to ignore. Type: nil
-    or string. Default value: nil.
+    The trailing character, of the previous line, of lines to ignore. Type:
+    nil or string. Default value: nil.
 
     *strict.deep_nesting.ignored_leading_characters*
 
@@ -115,8 +115,8 @@ Configuration options for overlong lines.
 
     *strict.overlong_lines.highlight*
 
-    Whether or not to highlight lines that are too long. Type: boolean. Default
-    value: true.
+    Whether or not to highlight lines that are too long. Type: boolean.
+    Default value: true.
 
     *strict.overlong_lines.highlight_group*
 
@@ -126,7 +126,8 @@ Configuration options for overlong lines.
     *strict.overlong_lines.length_limit*
 
     The maximum accepted length (in characters) of lines. |Textwidth|, if
-    enabled (non-zero), overrides this option. Type: number. Default value: 80.
+    enabled (non-zero), overrides this option. Type: number. Default value:
+    80.
 
 *strict.trailing_whitespace*
 
@@ -144,8 +145,8 @@ Configuration options for trailing whitespace.
 
     *strict.trailing_whitespace.remove_on_save*
 
-    Whether or not to remove trailing whitespace when writing the buffer. Type:
-    boolean. Default value: true.
+    Whether or not to remove trailing whitespace when writing the buffer.
+    Type: boolean. Default value: true.
 
 *strict.trailing_empty_lines*
 
@@ -163,8 +164,8 @@ Configuration options for trailing empty lines.
 
     *strict.trailing_empty_lines.remove_on_save*
 
-    Whether or not to remove trailing empty lines when writing the buffer. Type:
-    boolean. Default value: true.
+    Whether or not to remove trailing empty lines when writing the buffer.
+    Type: boolean. Default value: true.
 
 *strict.space_indentation*
 
@@ -182,8 +183,8 @@ Configuration options for space indentation.
 
     *strict.space_indentation.convert_on_save*
 
-    Whether or not to convert space indentation to tab indentation when writing
-    the buffer. Type: boolean. Default value: false.
+    Whether or not to convert space indentation to tab indentation when
+    writing the buffer. Type: boolean. Default value: false.
 
 *strict.tab_indentation*
 
@@ -196,13 +197,13 @@ Configuration options for tab indentation.
 
     *strict.tab_indentation.highlight_group*
 
-    The highlight group to use for tab indentation. Type: string. Default value:
-    'SpellBad'.
+    The highlight group to use for tab indentation. Type: string. Default
+    value: 'SpellBad'.
 
     *strict.tab_indentation.convert_on_save*
 
-    Whether or not to convert tab indentation to space indentation when writing
-    the buffer. Type: boolean. Default value: true.
+    Whether or not to convert tab indentation to space indentation when
+    writing the buffer. Type: boolean. Default value: true.
 
 *strict.todos*
 
