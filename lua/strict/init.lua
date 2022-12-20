@@ -236,7 +236,7 @@ end
 
 function strict.setup(user_config)
     local config = override_config(default_config, user_config)
-    vim.api.nvim_create_autocmd({ 'BufEnter', 'TermOpen' }, {
+    vim.api.nvim_create_autocmd({ 'BufEnter', 'TermOpen', 'OptionSet' }, {
         group = strict_augroup,
         callback = function() autocmd_callback(config) end
     })
