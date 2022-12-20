@@ -94,6 +94,20 @@ require('strict').setup({
 })
 ```
 
+## Bypassing
+
+The highlights of Strict can be disabled, per buffer, by the following command.
+
+```
+:call clearmatches()
+```
+
+The command below writes the current buffer without triggering autocmds. This bypasses the format-on-save functionality of Strict.
+
+```
+:noa w
+```
+
 ## Keymaps
 
 The formatting functions are exported for use in keymaps, autocmds or other plugins. Below is a basic example of using the functions in keymaps.
