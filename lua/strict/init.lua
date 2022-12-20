@@ -85,24 +85,6 @@ local function highlight_todos(highlight_group, match_priority)
     vim.fn.matchadd(highlight_group, 'TODO', match_priority)
 end
 
-local function contains(table, string)
-    if type(table) == 'string' then return string == table
-    elseif type(table) == 'table' then
-        for _, element in ipairs(table) do
-            if string == element then return true end
-        end
-    end
-    return false
-end
-
-local function is_included_filetype(included_filetypes, excluded_filetypes)
-    local filetype = vim.bo.filetype
-    if contains(excluded_filetypes, filetype) then return false end
-    if included_filetypes ~= nil and not
-        contains(included_filetypes, filetype) then return false end
-    return true
-end
-
 local function silent_cmd(command)
     local view = vim.fn.winsaveview()
     vim.cmd('silent keepjumps keeppatterns ' .. command)
@@ -133,15 +115,31 @@ function strict.convert_spaces_to_tabs()
     silent_cmd('%s/\\(^\\s*\\)\\@<=[ ]\\{' .. vim.bo.shiftwidth .. '}/\\t/ge')
 end
 
-local function valid_buffer(config)
-    if contains(config.excluded_buftypes, vim.bo.buftype) then return false end
-    if not is_included_filetype(config.included_filetypes,
-        config.excluded_filetypes) then return false end
+local function contains(table, value)
+    if type(table) ~= 'table' then return false end
+    for _, element in ipairs(table) do
+        if type(element) == 'table' then return contains(element, value)
+        elseif element == value then return true end
+    end
+    return false
+end
+
+local function is_valid_buffer(config)
+    if contains(config.excluded_buftypes, vim.bo.buftype) then
+        return false
+    end
+    if contains(config.excluded_filetypes, vim.bo.filetype) then
+        return false
+    end
+    if config.included_filetypes ~= nil and not
+        contains(config.included_filetypes, vim.bo.filetype) then
+        return false
+    end
     return true
 end
 
 local function format(config)
-    if not valid_buffer(config) then return end
+    if not is_valid_buffer(config) then return end
     if config.trailing_whitespace.remove_on_save then
         strict.remove_trailing_whitespace()
     end
@@ -161,7 +159,7 @@ end
 
 local function highlight(config)
     vim.fn.clearmatches()
-    if not valid_buffer(config) then return end
+    if not is_valid_buffer(config) then return end
     if vim.bo.textwidth == 0 then
         vim.bo.textwidth = config.overlong_lines.length_limit
     end
@@ -205,18 +203,18 @@ local function highlight(config)
     end
 end
 
-local function override_config(default, user)
+local function merge(default, user)
     if user == nil then return default end
     for key, value in pairs(user) do
         if type(default[key]) == 'table' then
-            override_config(default[key], value)
+            merge(default[key], value)
         else default[key] = value end
     end
     return default
 end
 
 function strict.setup(user_config)
-    local config = override_config(default_config, user_config)
+    local config = merge(default_config, user_config)
     vim.api.nvim_create_autocmd({ 'BufEnter', 'TermOpen', 'OptionSet' }, {
         group = strict_augroup,
         callback = function() highlight(config) end

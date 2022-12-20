@@ -64,17 +64,17 @@ Usage:
 *strict.included_filetypes*
 
 The filetypes of buffers that Strict shall be enabled on. A value of nil matches
-all filetypes. Type: nil, string or table. Default value: nil.
+all filetypes. Type: nil or table. Default value: nil.
 
 *strict.excluded_filetypes*
 
-The filetypes of buffers that Strict shall not be enabled on. Type: nil, string
-or table. Default value: nil.
+The filetypes of buffers that Strict shall not be enabled on. Type: nil or
+table. Default value: nil.
 
 *strict.excluded_buftypes*
 
-The buftypes of buffers that Strict shall not be enabled on. Type: nil, string
-or table. Default value: { 'help', 'nofile', 'terminal', 'prompt' }.
+The buftypes of buffers that Strict shall not be enabled on. Type: nil or table.
+Default value: { 'help', 'nofile', 'terminal', 'prompt' }.
 
 *strict.match_priority*
 
