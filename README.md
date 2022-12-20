@@ -107,7 +107,7 @@ The highlights of Strict can be temporarily disabled, per window, by the followi
 :call clearmatches()
 ```
 
-The command below writes the current buffer without triggering autocmds. This bypasses the format-on-save functionality of Strict.
+The command below writes the current buffer without triggering autocmds which bypasses the format-on-save functionality of Strict.
 
 ```
 :noa w

@@ -144,14 +144,6 @@ local function configure_highlights(config)
             config.todos.highlight_group,
             config.match_priority)
     end
-    vim.api.nvim_create_autocmd('BufWinLeave', {
-        group = strict_augroup,
-        buffer = 0,
-        callback = function()
-            vim.fn.clearmatches()
-            return true
-        end
-    })
 end
 
 local function silent_cmd(command)
@@ -224,6 +216,7 @@ local function configure_formatting(config)
 end
 
 local function autocmd_callback(config)
+    vim.fn.clearmatches()
     if contains(config.excluded_buftypes, vim.bo.buftype) then return end
     if not is_included_filetype(config.included_filetypes,
         config.excluded_filetypes) then return end
@@ -243,7 +236,7 @@ end
 
 function strict.setup(user_config)
     local config = override_config(default_config, user_config)
-    vim.api.nvim_create_autocmd('BufEnter', {
+    vim.api.nvim_create_autocmd({ 'BufEnter', 'TermOpen' }, {
         group = strict_augroup,
         callback = function() autocmd_callback(config) end
     })
