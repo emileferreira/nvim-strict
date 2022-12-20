@@ -74,6 +74,10 @@ local default_config = {
         highlight = true,
         highlight_group = 'SpellBad',
         convert_on_save = true
+    },
+    todos = {
+        highlight = true,
+        highlight_group = 'DiffAdd'
     }
 }
 ```

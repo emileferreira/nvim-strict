@@ -37,6 +37,10 @@ local default_config = {
         highlight = true,
         highlight_group = 'SpellBad',
         convert_on_save = true
+    },
+    todos = {
+        highlight = true,
+        highlight_group = 'DiffAdd'
     }
 }
 
@@ -76,6 +80,10 @@ end
 local function highlight_space_indentation(highlight_group, match_priority)
     local regex = string.format('\\(^\\s*\\)\\@<= ')
     vim.fn.matchadd(highlight_group, regex, match_priority)
+end
+
+local function highlight_todos(highlight_group, match_priority)
+    vim.fn.matchadd(highlight_group, 'TODO', match_priority)
 end
 
 local function contains(table, string)
@@ -129,6 +137,11 @@ local function configure_highlights(config)
     if config.space_indentation.highlight then
         highlight_space_indentation(
             config.space_indentation.highlight_group,
+            config.match_priority)
+    end
+    if config.todos.highlight then
+        highlight_todos(
+            config.todos.highlight_group,
             config.match_priority)
     end
     vim.api.nvim_create_autocmd('BufWinLeave', {

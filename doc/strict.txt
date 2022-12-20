@@ -204,4 +204,18 @@ Configuration options for tab indentation.
     Whether or not to convert tab indentation to space indentation when writing
     the buffer. Type: boolean. Default value: true.
 
+*strict.todos*
+
+Configuration options for TODO comments.
+
+    *strict.todos.highlight*
+
+    Whether or not to highlight TODO comments. Type: boolean. Default value:
+    true.
+
+    *strict.todos.highlight_group*
+
+    The highlight group to use for TODO comments. Type: string. Default value:
+    'DiffAdd'.
+
 vim:tw=78:ts=8:ft=help:norl:
