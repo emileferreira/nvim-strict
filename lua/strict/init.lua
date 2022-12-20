@@ -103,7 +103,68 @@ local function is_included_filetype(included_filetypes, excluded_filetypes)
     return true
 end
 
-local function configure_highlights(config)
+local function silent_cmd(command)
+    local view = vim.fn.winsaveview()
+    vim.cmd('silent keepjumps keeppatterns ' .. command)
+    vim.fn.winrestview(view)
+end
+
+function strict.split_overlong_lines()
+    silent_cmd('g/\\%>' .. vim.bo.textwidth .. 'v.\\+/normal gwl')
+end
+
+function strict.remove_trailing_whitespace()
+    silent_cmd('%s/\\s\\+$//e')
+end
+
+function strict.remove_trailing_empty_lines()
+    silent_cmd('%s/\\($\\n\\s*\\)\\+\\%$//e')
+end
+
+function strict.convert_tabs_to_spaces()
+    local spaces = ''
+    for _ = 1, vim.bo.shiftwidth, 1 do
+        spaces = spaces .. ' '
+    end
+    silent_cmd('%s/\\(^\\s*\\)\\@<=\\t/' .. spaces .. '/ge')
+end
+
+function strict.convert_spaces_to_tabs()
+    silent_cmd('%s/\\(^\\s*\\)\\@<=[ ]\\{' .. vim.bo.shiftwidth .. '}/\\t/ge')
+end
+
+local function valid_buffer(config)
+    if contains(config.excluded_buftypes, vim.bo.buftype) then return false end
+    if not is_included_filetype(config.included_filetypes,
+        config.excluded_filetypes) then return false end
+    return true
+end
+
+local function format(config)
+    if not valid_buffer(config) then return end
+    if config.trailing_whitespace.remove_on_save then
+        strict.remove_trailing_whitespace()
+    end
+    if config.trailing_empty_lines.remove_on_save then
+        strict.remove_trailing_empty_lines()
+    end
+    if config.tab_indentation.convert_on_save then
+        strict.convert_tabs_to_spaces()
+    end
+    if config.space_indentation.convert_on_save then
+        strict.convert_spaces_to_tabs()
+    end
+    if config.overlong_lines.split_on_save then
+        strict.split_overlong_lines()
+    end
+end
+
+local function highlight(config)
+    vim.fn.clearmatches()
+    if not valid_buffer(config) then return end
+    if vim.bo.textwidth == 0 then
+        vim.bo.textwidth = config.overlong_lines.length_limit
+    end
     if config.trailing_whitespace.highlight then
         highlight_trailing_whitespace(
             config.trailing_whitespace.highlight_group,
@@ -144,86 +205,6 @@ local function configure_highlights(config)
     end
 end
 
-local function silent_cmd(command)
-    local view = vim.fn.winsaveview()
-    vim.cmd('silent keepjumps keeppatterns ' .. command)
-    vim.fn.winrestview(view)
-end
-
-function strict.split_overlong_lines()
-    silent_cmd('g/\\%>' .. vim.bo.textwidth .. 'v.\\+/normal gwl')
-end
-
-function strict.remove_trailing_whitespace()
-    silent_cmd('%s/\\s\\+$//e')
-end
-
-function strict.remove_trailing_empty_lines()
-    silent_cmd('%s/\\($\\n\\s*\\)\\+\\%$//e')
-end
-
-function strict.convert_tabs_to_spaces()
-    local spaces = ''
-    for _ = 1, vim.bo.shiftwidth, 1 do
-        spaces = spaces .. ' '
-    end
-    silent_cmd('%s/\\(^\\s*\\)\\@<=\\t/' .. spaces .. '/ge')
-end
-
-function strict.convert_spaces_to_tabs()
-    silent_cmd('%s/\\(^\\s*\\)\\@<=[ ]\\{' .. vim.bo.shiftwidth .. '}/\\t/ge')
-end
-
-local function configure_formatting(config)
-    if config.trailing_whitespace.remove_on_save then
-        vim.api.nvim_create_autocmd('BufWritePre', {
-            group = strict_augroup,
-            buffer = 0,
-            callback = strict.remove_trailing_whitespace
-        })
-    end
-    if config.trailing_empty_lines.remove_on_save then
-        vim.api.nvim_create_autocmd('BufWritePre', {
-            group = strict_augroup,
-            buffer = 0,
-            callback = strict.remove_trailing_empty_lines
-        })
-    end
-    if config.tab_indentation.convert_on_save then
-        vim.api.nvim_create_autocmd('BufWritePre', {
-            group = strict_augroup,
-            buffer = 0,
-            callback = strict.convert_tabs_to_spaces
-        })
-    end
-    if config.space_indentation.convert_on_save then
-        vim.api.nvim_create_autocmd('BufWritePre', {
-            group = strict_augroup,
-            buffer = 0,
-            callback = strict.convert_spaces_to_tabs
-        })
-    end
-    if config.overlong_lines.split_on_save then
-        vim.api.nvim_create_autocmd('BufWritePre', {
-            group = strict_augroup,
-            buffer = 0,
-            callback = strict.split_overlong_lines
-        })
-    end
-end
-
-local function autocmd_callback(config)
-    vim.fn.clearmatches()
-    if contains(config.excluded_buftypes, vim.bo.buftype) then return end
-    if not is_included_filetype(config.included_filetypes,
-        config.excluded_filetypes) then return end
-    if vim.bo.textwidth == 0 then
-        vim.bo.textwidth = config.overlong_lines.length_limit
-    end
-    configure_highlights(config)
-    configure_formatting(config)
-end
-
 local function override_config(default, user)
     if user == nil then return default end
     for key, value in pairs(user) do
@@ -238,7 +219,11 @@ function strict.setup(user_config)
     local config = override_config(default_config, user_config)
     vim.api.nvim_create_autocmd({ 'BufEnter', 'TermOpen', 'OptionSet' }, {
         group = strict_augroup,
-        callback = function() autocmd_callback(config) end
+        callback = function() highlight(config) end
+    })
+    vim.api.nvim_create_autocmd('BufWritePre', {
+        group = strict_augroup,
+        callback = function() format(config) end
     })
 end
 
