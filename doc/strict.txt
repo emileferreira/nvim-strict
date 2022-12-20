@@ -55,7 +55,7 @@ Usage:
 *strict.split_overlong_lines()*
 
 Splits lines, on the closest whitespace, that are longer than |textwidth|
-characters. Strict sets |textwidth| to |strict.overlong_lines.length_limit|.
+characters.
 
 Usage:
 
@@ -125,8 +125,8 @@ Configuration options for overlong lines.
 
     *strict.overlong_lines.length_limit*
 
-    The maximum accepted length (in characters) of lines. Type: number. Default
-    value: 80.
+    The maximum accepted length (in characters) of lines. |Textwidth|, if
+    enabled (non-zero), overrides this option. Type: number. Default value: 80.
 
 *strict.trailing_whitespace*
 

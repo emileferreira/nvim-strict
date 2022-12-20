@@ -66,9 +66,8 @@ local function highlight_trailing_empty_lines(highlight_group, match_priority)
     vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
-local function highlight_overlong_lines(
-    highlight_group, length_limit, match_priority)
-    local regex = '\\%>' .. length_limit .. 'v.\\+'
+local function highlight_overlong_lines(highlight_group, match_priority)
+    local regex = '\\%>' .. vim.bo.textwidth .. 'v.\\+'
     vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
@@ -118,7 +117,6 @@ local function configure_highlights(config)
     if config.overlong_lines.highlight then
         highlight_overlong_lines(
             config.overlong_lines.highlight_group,
-            config.overlong_lines.length_limit,
             config.match_priority)
     end
     if config.deep_nesting.highlight then
@@ -206,7 +204,6 @@ local function configure_formatting(config)
         })
     end
     if config.overlong_lines.split_on_save then
-        vim.bo.textwidth = config.overlong_lines.length_limit
         vim.api.nvim_create_autocmd('BufWritePre', {
             group = strict_augroup,
             buffer = 0,
@@ -220,6 +217,9 @@ local function autocmd_callback(config)
     if contains(config.excluded_buftypes, vim.bo.buftype) then return end
     if not is_included_filetype(config.included_filetypes,
         config.excluded_filetypes) then return end
+    if vim.bo.textwidth == 0 then
+        vim.bo.textwidth = config.overlong_lines.length_limit
+    end
     configure_highlights(config)
     configure_formatting(config)
 end
