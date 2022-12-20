@@ -13,6 +13,7 @@ Strict (or nvim-strict) is an all-Lua wrapper for a collection of regular expres
 * Highlights and removes trailing whitespace
 * Highlights and removes trailing empty lines
 * Highlights and converts tab / space indentation
+* Highlights TODO comments
 * Formatting functions preserve window, cursor, jumplist and search state
 * Include and exclude filetypes
 * Mappable functions
@@ -100,7 +101,7 @@ require('strict').setup({
 
 ## Bypassing
 
-The highlights of Strict can be disabled, per buffer, by the following command.
+The highlights of Strict can be temporarily disabled, per window, by the following command.
 
 ```
 :call clearmatches()
