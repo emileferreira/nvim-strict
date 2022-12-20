@@ -1,6 +1,6 @@
 # nvim-strict
 
-Strictly enforce configurable, best-practice code style with this [Neovim](https://neovim.io/) plugin. Expose deep nesting, overlong lines, trailing whitespace, trailing empty lines and inconsistent indentation.
+Strictly enforce configurable, best-practice code style with this Neovim plugin. Expose deep nesting, overlong lines, trailing whitespace, trailing empty lines, todos and inconsistent indentation.
 
 ![nvim-strict demo](demo.png)
 
