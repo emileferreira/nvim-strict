@@ -35,7 +35,7 @@ use({
 
 ## Configuration
 
-Strict comes with batteries included and (IMHO) sane defaults. The default configuration is shown below. It can be modified and passed to the `setup` function to override the default values. The configuration options are documented in [strict.txt](docs/strict.txt).
+Strict comes with batteries included and (IMHO) sane defaults. The default configuration is shown below. It can be modified and passed to the `setup` function to override the default values. The configuration options are documented in [strict.txt](doc/strict.txt).
 
 ```lua
 local default_config = {
