@@ -1,6 +1,6 @@
 # nvim-strict
 
-Strict, native code style formatting Neovim plugin. Expose deep nesting, overlong lines, trailing whitespace, trailing empty lines, todos and inconsistent indentation.
+Strict, native code style formatting plugin for Neovim. Expose deep nesting, overlong lines, trailing whitespace, trailing empty lines, todos and inconsistent indentation.
 
 ![nvim-strict demo](demo.png)
 
