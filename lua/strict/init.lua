@@ -47,12 +47,13 @@ local default_config = {
 local function highlight_deep_nesting(
     highlight_group, depth_limit, ignored_trailing_characters,
     ignored_leading_characters, match_priority)
-    local indent_size = vim.bo.shiftwidth
-    local regex = string
-        .format('\\([%s]\\)\\@<!\\n^\\s\\{%s}\\zs\\s\\+\\(\\s*[%s]\\)\\@!',
-            ignored_trailing_characters or '',
-            depth_limit * indent_size,
-            ignored_leading_characters or '')
+    local regex = string.format(
+        '\\([%s]\\)\\@<!\\n^\\(\\t\\{%s}\\| \\{%s}\\)' ..
+        '\\zs\\s\\+\\(\\s*[%s]\\)\\@!',
+        ignored_trailing_characters or '',
+        depth_limit,
+        depth_limit * vim.bo.shiftwidth,
+        ignored_leading_characters or '')
     vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
