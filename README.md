@@ -1,10 +1,10 @@
 # nvim-strict
 
-Strictly enforce configurable, best-practice code style with this Neovim plugin. Expose deep nesting, overlong lines, trailing whitespace, trailing empty lines, todos and inconsistent indentation.
+Strict, native code style formatting Neovim plugin. Expose deep nesting, overlong lines, trailing whitespace, trailing empty lines, todos and inconsistent indentation.
 
 ![nvim-strict demo](demo.png)
 
-Strict (or nvim-strict) is an all-Lua wrapper for a collection of regular expressions which combine to provide lightweight, IDE-like code style hints and formatting.
+Strict (or nvim-strict) is an all-Lua wrapper for a collection of regular expressions which combine to provide lightweight, IDE-like code style hints and formatting. Strict is language agnostic; it highlights and formats properties common to all programming languages. It pairs well with the Neovim LSP client for language-specific code formatting with strict and configurable code style formatting.
 
 ## Features
 
