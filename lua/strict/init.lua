@@ -73,12 +73,12 @@ local function highlight_overlong_lines(highlight_group, match_priority)
 end
 
 local function highlight_tab_indentation(highlight_group, match_priority)
-    local regex = string.format('\\(^\\s*\\)\\@<=\\t')
+    local regex = string.format('\\(^\\s*\\)\\@<=\\t\\+')
     vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
 local function highlight_space_indentation(highlight_group, match_priority)
-    local regex = string.format('\\(^\\s*\\)\\@<= ')
+    local regex = string.format('\\(^\\s*\\)\\@<= \\+')
     vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
@@ -113,7 +113,7 @@ function strict.convert_tabs_to_spaces()
 end
 
 function strict.convert_spaces_to_tabs()
-    silent_cmd('%s/\\(^\\s*\\)\\@<=[ ]\\{' .. vim.bo.shiftwidth .. '}/\\t/ge')
+    silent_cmd('%s/\\(^\\s*\\)\\@<= \\{' .. vim.bo.shiftwidth .. '}/\\t/ge')
 end
 
 local function contains(table, value)
