@@ -127,6 +127,10 @@ vim.keymap.set('n', '<Leader>ts', strict.convert_tabs_to_spaces, options)
 vim.keymap.set('n', '<Leader>ol', strict.split_overlong_lines, options)
 ```
 
+## Reviews
+
+"Looks cool!" - [TJ DeVries](https://github.com/tjdevries), Neovim core maintainer
+
 ## Contributing
 
 Pull requests, bug reports and feature requests are welcomed.
