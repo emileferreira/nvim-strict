@@ -61,12 +61,12 @@ local default_config = {
     trailing_whitespace = {
         highlight = true,
         highlight_group = 'SpellBad',
-        remove_on_save = true,
+        remove_on_save = true
     },
     trailing_empty_lines = {
         highlight = true,
         highlight_group = 'SpellBad',
-        remove_on_save = true,
+        remove_on_save = true
     },
     space_indentation = {
         highlight = false,
