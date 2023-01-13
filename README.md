@@ -18,8 +18,8 @@ Strict is language agnostic; it highlights and formats properties common to all 
 * Highlights TODO comments
 * Formatting functions preserve window, cursor, jumplist and search state
 * Include and exclude filetypes
-* Mappable functions
-* Highly configurable
+* No external dependencies
+* Highly configurable and extensible
 * Blazingly fast
 
 ## Installation
