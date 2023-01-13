@@ -12,9 +12,8 @@ Strict is language agnostic; it highlights and formats properties common to all 
 
 * Highlights deeply-nested code
 * Highlights and splits overlong lines
-* Highlights and removes trailing whitespace
-* Highlights and removes trailing empty lines
-* Highlights and converts tab / space indentation
+* Highlights and removes trailing empty lines and whitespace
+* Highlights and converts tab or space indentation
 * Highlights TODO comments
 * Formatting functions preserve window, cursor, jumplist and search state
 * Include and exclude filetypes
