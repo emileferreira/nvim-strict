@@ -16,7 +16,7 @@ Strict is language agnostic; it highlights and formats properties common to all 
 * Highlights and converts tab or space indentation
 * Highlights TODO comments
 * Formatting functions preserve window, cursor, jumplist and search state
-* Include and exclude filetypes
+* Include and exclude filetypes and buftypes
 * No external dependencies
 * Highly configurable and extensible
 * Blazingly fast
