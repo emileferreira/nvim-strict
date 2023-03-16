@@ -134,6 +134,11 @@ Configuration options for overlong lines.
     enabled (non-zero), overrides this option. Type: number. Default value:
     80.
 
+    *strict.overlong_lines.split_on_save*
+
+    Whether or not to split overlong lines when writing the buffer. Type:
+    boolean. Default value: true.
+
 *strict.trailing_whitespace*
 
 Configuration options for trailing whitespace.
