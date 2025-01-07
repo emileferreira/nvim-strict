@@ -47,13 +47,26 @@ local default_config = {
 local function highlight_deep_nesting(
     highlight_group, depth_limit, ignored_trailing_characters,
     ignored_leading_characters, match_priority)
+
+    -- Get the num of spaces equal to the depth limit
+    local shift_width = vim.bo.shiftwidth
+    local indent_limit = depth_limit * shift_width
+
     local regex = string.format(
-        '\\([%s]\\)\\@<!\\n^\\(\\t\\{%s}\\| \\{%s}\\)' ..
-        '\\zs\\s\\+\\(\\s*[%s]\\)\\@!',
-        ignored_trailing_characters or '',
-        depth_limit,
-        depth_limit * vim.bo.shiftwidth,
-        ignored_leading_characters or '')
+        '\\(^\\s\\{%s,}\\)' .. -- Matches lines starting with indentation
+        '\\zs.*',              -- Highlights the rest of the line
+        indent_limit
+    )
+
+    -- If ignored trailing or leading characters are specified, adjust the regex
+    if ignored_trailing_characters or ignored_leading_characters then
+        regex = string.format(
+            '\\(%s\\)\\@<!%s\\(%s\\)\\@!',
+            vim.pesc(ignored_trailing_characters or ''),
+            regex,
+            vim.pesc(ignored_leading_characters or '')
+        )
+    end
     vim.fn.matchadd(highlight_group, regex, match_priority)
 end
 
