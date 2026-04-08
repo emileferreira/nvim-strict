@@ -55,6 +55,7 @@ local function highlight_deep_nesting(
     local regex = string.format(
         '^\\(\\t{%s}\\|\\s\\{%s}\\)' .. -- Matches lines starting with indentation
         '\\zs\\s\\+',              -- Highlights the rest of the line
+	depth_limit,
         indent_limit
     )
 
