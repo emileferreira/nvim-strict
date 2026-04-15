@@ -44,28 +44,35 @@ local default_config = {
     }
 }
 
+local function make_char_class(chars)
+    if not chars or chars == '' then return '' end
+    local escaped_chars = chars:gsub("([%]%\\%^%-])", "\\%1")
+    return "[" .. escaped_chars .. "]"
+end
+
 local function highlight_deep_nesting(
     highlight_group, depth_limit, ignored_trailing_characters,
     ignored_leading_characters, match_priority)
-
-    -- Get the num of spaces equal to the depth limit
     local shift_width = vim.bo.shiftwidth
     local indent_limit = depth_limit * shift_width
-
-    local regex = string.format(
-        '\\(^\\s\\{%s,}\\)' .. -- Matches lines starting with indentation
-        '\\zs.*',              -- Highlights the rest of the line
+    local regex = '^'
+    if ignored_trailing_characters and ignored_trailing_characters ~= '' then
+        local trailing_class = make_char_class(ignored_trailing_characters)
+        regex = regex .. string.format('\\(%s\\n\\)\\@<!', trailing_class)
+    end
+    regex = regex .. string.format(
+        '\\(\\t\\{%s}\\|\\s\\{%s}\\)\\zs',
+        depth_limit,
         indent_limit
     )
-
-    -- If ignored trailing or leading characters are specified, adjust the regex
-    if ignored_trailing_characters or ignored_leading_characters then
-        regex = string.format(
-            '\\(%s\\)\\@<!%s\\(%s\\)\\@!',
-            vim.pesc(ignored_trailing_characters or ''),
-            regex,
-            vim.pesc(ignored_leading_characters or '')
+    if ignored_leading_characters and ignored_leading_characters ~= '' then
+        local leading_class = make_char_class(ignored_leading_characters)
+        regex = regex .. string.format(
+            '\\s\\+\\ze\\(\\(%s\\)\\@![^ \\t]\\|$\\)',
+            leading_class
         )
+    else
+        regex = regex .. '\\s\\+\\ze\\([^ \\t]\\|$\\)'
     end
     vim.fn.matchadd(highlight_group, regex, match_priority)
 end
@@ -132,8 +139,11 @@ end
 local function contains(table, value)
     if type(table) ~= 'table' then return false end
     for _, element in ipairs(table) do
-        if type(element) == 'table' then return contains(element, value)
-        elseif element == value then return true end
+        if type(element) == 'table' then
+            return contains(element, value)
+        elseif element == value then
+            return true
+        end
     end
     return false
 end
@@ -222,7 +232,9 @@ local function merge(default, user)
     for key, value in pairs(user) do
         if type(default[key]) == 'table' then
             merge(default[key], value)
-        else default[key] = value end
+        else
+            default[key] = value
+        end
     end
     return default
 end
