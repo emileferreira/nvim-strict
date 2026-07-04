@@ -53,7 +53,7 @@ end
 local function highlight_deep_nesting(
     highlight_group, depth_limit, ignored_trailing_characters,
     ignored_leading_characters, match_priority)
-    local shift_width = vim.bo.shiftwidth
+    local shift_width = vim.bo.tabstop
     local indent_limit = depth_limit * shift_width
     local regex = '^'
     if ignored_trailing_characters and ignored_trailing_characters ~= '' then
