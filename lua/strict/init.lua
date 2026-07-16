@@ -53,7 +53,7 @@ end
 local function highlight_deep_nesting(
     highlight_group, depth_limit, ignored_trailing_characters,
     ignored_leading_characters, match_priority)
-    local shift_width = vim.bo.tabstop
+    local shift_width = vim.fn.shiftwidth()
     local indent_limit = depth_limit * shift_width
     local regex = '^'
     if ignored_trailing_characters and ignored_trailing_characters ~= '' then
@@ -126,14 +126,14 @@ end
 
 function strict.convert_tabs_to_spaces()
     local spaces = ''
-    for _ = 1, vim.bo.shiftwidth, 1 do
+    for _ = 1, vim.fn.shiftwidth(), 1 do
         spaces = spaces .. ' '
     end
     silent_cmd('%s/\\(^\\s*\\)\\@<=\\t/' .. spaces .. '/ge')
 end
 
 function strict.convert_spaces_to_tabs()
-    silent_cmd('%s/\\(^\\s*\\)\\@<= \\{' .. vim.bo.shiftwidth .. '}/\\t/ge')
+    silent_cmd('%s/\\(^\\s*\\)\\@<= \\{' .. vim.fn.shiftwidth() .. '}/\\t/ge')
 end
 
 local function contains(table, value)
